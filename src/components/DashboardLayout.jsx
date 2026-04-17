@@ -14,7 +14,7 @@ function DashboardLayout({ children }) {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       
       {/* NAVBAR */}
-      <nav style={{ backgroundColor: '#0d6efd', padding: '10px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <nav style={{ backgroundColor: '#32270355', padding: '10px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h5 style={{ color: 'white', margin: 0 }}>EduSchedule Pro</h5>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <span style={{ color: 'white' }}>👤 {user?.nom || 'Utilisateur'}</span>
