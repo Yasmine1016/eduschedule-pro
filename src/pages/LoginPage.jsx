@@ -1,21 +1,64 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import './LoginPage.css'
+
 function LoginPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const { login } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = async () => {
+    setError('')
+    try {
+      const response = await fetch('http://localhost/eduschedule/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      const data = await response.json()
+      if (response.ok) {
+        login(data.user, data.token)
+        navigate('/dashboard')
+      } else {
+        setError(data.message || 'Email ou mot de passe incorrect')
+      }
+    } catch (err) {
+      setError('Erreur de connexion au serveur')
+    }
+  }
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f0f0f0' }}>
-      <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '10px', width: '400px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-        <h2 style={{ textAlign: 'center', color: '#0d6efd' }}>EduSchedule Pro</h2>
-        <h5 style={{ textAlign: 'center', color: 'gray' }}>Connexion</h5>
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">EduSchedule Pro</h2>
+        <h5 className="login-subtitle">Connexion</h5>
 
-        <div style={{ marginBottom: '15px' }}>
+        {error && <div className="login-error">{error}</div>}
+
+        <div className="login-group">
           <label>Email</label>
-          <input type="email" style={{ width: '100%', padding: '8px', marginTop: '5px', border: '1px solid #ccc', borderRadius: '5px' }} placeholder="votre@email.com" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="votre@email.com"
+          />
         </div>
 
-        <div style={{ marginBottom: '15px' }}>
+        <div className="login-group">
           <label>Mot de passe</label>
-          <input type="password" style={{ width: '100%', padding: '8px', marginTop: '5px', border: '1px solid #ccc', borderRadius: '5px' }} placeholder="••••••••" />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+          />
         </div>
 
-        <button style={{ width: '100%', padding: '10px', backgroundColor: '#0d6efd', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+        <button className="login-btn" onClick={handleSubmit}>
           Se connecter
         </button>
       </div>
