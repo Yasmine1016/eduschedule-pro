@@ -70,9 +70,9 @@ function EmploiTempsPage() {
             </thead>
             <tbody>
               {emploiTemps.matin.map((bloc, index) => (
-                <div key={`matin-${index}`}>
-                  <tr className="ligneCours">
-                    <td rowspan="3" className="horaire">{bloc.horaire}</td>
+                <>
+                  <tr className="ligneCours" key={`matin-mat-${index}`}>
+                    <td rowSpan="3" className="horaire">{bloc.horaire}</td>
                     {bloc.jours.map((cours, i) => (
                       <td key={i} className={`matiere ${cours.modif ? 'coursModif' : ''}`}>
                         {cours.matiere && <p className="heure">{cours.heure}</p>}
@@ -80,17 +80,17 @@ function EmploiTempsPage() {
                       </td>
                     ))}
                   </tr>
-                  <tr className="nomProf">
+                  <tr className="nomProf" key={`matin-prof-${index}`}>
                     {bloc.jours.map((cours, i) => (
                       <td key={i} className={cours.modif ? 'coursModif' : ''}>{cours.prof}</td>
                     ))}
                   </tr>
-                  <tr className="salleCours">
+                  <tr className="salleCours" key={`matin-salle-${index}`}>
                     {bloc.jours.map((cours, i) => (
                       <td key={i}>{cours.salle}</td>
                     ))}
                   </tr>
-                  <tr>
+                  <tr key={`matin-empty-${index}`}>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -99,7 +99,7 @@ function EmploiTempsPage() {
                     <td></td>
                     <td></td>
                   </tr>
-                </div>
+                </>
               ))}
 
               <tr>
@@ -107,9 +107,9 @@ function EmploiTempsPage() {
               </tr>
 
               {emploiTemps.apremidi.map((bloc, index) => (
-                <div key={`apremidi-${index}`}>
-                  <tr className="ligneCours">
-                    <td rowspan="3" className="horaire">{bloc.horaire}</td>
+                <>
+                  <tr className="ligneCours" key={`apremidi-mat-${index}`}>
+                    <td rowSpan="3" className="horaire">{bloc.horaire}</td>
                     {bloc.jours.map((cours, i) => (
                       <td key={i} className="matiere">
                         {cours.matiere && <p className="heure">{cours.heure}</p>}
@@ -117,17 +117,17 @@ function EmploiTempsPage() {
                       </td>
                     ))}
                   </tr>
-                  <tr className="nomProf">
+                  <tr className="nomProf" key={`apremidi-prof-${index}`}>
                     {bloc.jours.map((cours, i) => (
                       <td key={i}>{cours.prof}</td>
                     ))}
                   </tr>
-                  <tr className="salleCours">
+                  <tr className="salleCours" key={`apremidi-salle-${index}`}>
                     {bloc.jours.map((cours, i) => (
                       <td key={i}>{cours.salle}</td>
                     ))}
                   </tr>
-                </div>
+                </>
               ))}
             </tbody>
           </table>
