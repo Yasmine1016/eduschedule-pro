@@ -1,43 +1,158 @@
 import DashboardLayout from '../components/DashboardLayout'
 import './EmploiTempsPage.css'
-
-const jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi']
-const heures = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00']
+import { useState } from 'react'
 
 function EmploiTempsPage() {
+  const [emploiTemps] = useState({
+    filiere: 'ITRST',
+    periode: 'du 5 au 10 janvier 2026',
+    matin: [
+      {
+        horaire: '7h30 à 9h30',
+        jours: [
+          { matiere: 'Traitement de signal 3', heure: '[7h30 : 13h30]', prof: 'M. SANOGO Aboubacar', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Développement Web', heure: '[8h30 : 13h30]', prof: 'Dr BERE Cédric', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Développement Web', heure: '[8h30 : 13h30]', prof: 'Dr BERE Cédric', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Développement Web', heure: '[8h30 : 12h30]', prof: 'Dr BERE Cédric', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Développement Web', heure: '[9h00 : 12h30]', prof: 'Dr BERE Cédric', salle: 'Annexe Ouaga Inter Salle 1', modif: true },
+          { matiere: 'Programmation avancée C/C++', heure: '[7h30 : 12h30]', prof: 'M. SORGHO Martial', salle: 'Annexe Ouaga Inter Salle 1', modif: false }
+        ]
+      },
+      {
+        horaire: '10h à 12h15',
+        jours: [
+          { matiere: '', heure: '', prof: '', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: '', heure: '', prof: '', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: '', heure: '', prof: '', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: '', heure: '', prof: '', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: '', heure: '', prof: '', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Programmation avancée C/C++', heure: '[7h30 : 12h30]', prof: 'M. SORGHO Martial', salle: 'Annexe Ouaga Inter Salle 1', modif: false }
+        ]
+      }
+    ],
+    apremidi: [
+      {
+        horaire: '14h à 17h',
+        jours: [
+          { matiere: '', heure: '', prof: '', salle: '', modif: false },
+          { matiere: 'Sécurité des réseaux et systèmes informatiques', heure: '[16h : 19h]', prof: 'SANOGO Amidou', salle: 'Salle 15', modif: false },
+          { matiere: 'Programmation avancée C/C++', heure: '[16h : 19h]', prof: 'SORGHO Martial', salle: 'Salle 1', modif: false },
+          { matiere: 'Traitement de signal 3', heure: '[14h : 18h]', prof: 'SANOGO Aboubacar', salle: 'Annexe Ouaga Inter Salle 1', modif: false },
+          { matiere: 'Sécurité des réseaux et systèmes informatiques', heure: '[16h : 19h]', prof: 'SANOGO Amidou', salle: 'Salle 15', modif: false },
+          { matiere: '', heure: '', prof: '', salle: '', modif: false }
+        ]
+      }
+    ],
+    devoirs: [
+      { devoir: '', date: '' },
+      { devoir: '', date: '' }
+    ]
+  })
+
+  const jours = ['Lundi 05', 'Mardi 06', 'Mercredi 07', 'Jeudi 08', 'Vendredi 09', 'Samedi 10']
+
   return (
     <DashboardLayout>
-      <h2>Emploi du Temps</h2>
+      <h1 className="emploi">Emploi du temps</h1>
+      <br />
 
-      <div className="filters">
-        <select>
-          <option>Toutes les classes</option>
-          <option>Licence 1</option>
-          <option>Licence 2</option>
-          <option>Licence 3</option>
-          <option>Master 1</option>
-        </select>
-        <input type="week" />
-        <button className="btn-filter">Filtrer</button>
-      </div>
+      <div className="tableContainer">
+        <h1 className="filiere">{emploiTemps.filiere}</h1>
 
-      <div className="table-container">
-        <table className="emploi-table">
-          <thead>
-            <tr>
-              <th>Heure</th>
-              {jours.map(jour => <th key={jour}>{jour}</th>)}
-            </tr>
-          </thead>
-          <tbody>
-            {heures.map((heure, index) => (
-              <tr key={heure}>
-                <td className="heure-cell">{heure}</td>
-                {jours.map(jour => <td key={jour}></td>)}
+        <div>
+          <table className="tableCours" width="95%">
+            <caption>Emploi du temps {emploiTemps.periode}</caption>
+            <thead>
+              <tr>
+                <th width="5%">Horaire</th>
+                {jours.map(jour => <th key={jour}>{jour}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {emploiTemps.matin.map((bloc, index) => (
+                <div key={`matin-${index}`}>
+                  <tr className="ligneCours">
+                    <td rowspan="3" className="horaire">{bloc.horaire}</td>
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i} className={`matiere ${cours.modif ? 'coursModif' : ''}`}>
+                        {cours.matiere && <p className="heure">{cours.heure}</p>}
+                        {cours.matiere && <p>{cours.matiere}</p>}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="nomProf">
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i} className={cours.modif ? 'coursModif' : ''}>{cours.prof}</td>
+                    ))}
+                  </tr>
+                  <tr className="salleCours">
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i}>{cours.salle}</td>
+                    ))}
+                  </tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </div>
+              ))}
+
+              <tr>
+                <td colSpan="7"><br /></td>
+              </tr>
+
+              {emploiTemps.apremidi.map((bloc, index) => (
+                <div key={`apremidi-${index}`}>
+                  <tr className="ligneCours">
+                    <td rowspan="3" className="horaire">{bloc.horaire}</td>
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i} className="matiere">
+                        {cours.matiere && <p className="heure">{cours.heure}</p>}
+                        {cours.matiere && <p>{cours.matiere}</p>}
+                      </td>
+                    ))}
+                  </tr>
+                  <tr className="nomProf">
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i}>{cours.prof}</td>
+                    ))}
+                  </tr>
+                  <tr className="salleCours">
+                    {bloc.jours.map((cours, i) => (
+                      <td key={i}>{cours.salle}</td>
+                    ))}
+                  </tr>
+                </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <br /><br />
+
+        <div>
+          <table className="tableDevoir" width="30%">
+            <thead>
+              <tr>
+                <th>Devoir Prévu</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {emploiTemps.devoirs.map((devoir, i) => (
+                <tr key={i}>
+                  <td>{devoir.devoir}</td>
+                  <td>{devoir.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </DashboardLayout>
   )
