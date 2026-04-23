@@ -32,6 +32,7 @@ function DashboardLayout({ children }) {
             <li onClick={() => navigate('/emploi-temps')}>📅 Emploi du temps</li>
             <li onClick={() => navigate('/cahiers')}>📖 Cahier de texte</li>
             <li onClick={() => navigate('/vacations')}>💰 Vacations</li>
+            <li onClick={() => navigate('/pointage-qr')}>📱 Pointage QR</li>
           </ul>
         </div>
 
