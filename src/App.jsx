@@ -14,22 +14,20 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
           
-          <Route path="/dashboard" element={
-            <ProtectedRoute><DashboardPage /></ProtectedRoute>
-          } />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          
           <Route path="/emploi-temps" element={
-            <ProtectedRoute><EmploiTempsPage /></ProtectedRoute>
+            <EmploiTempsPage />
           } />
-          <Route path="/cahiers" element={
-            <ProtectedRoute><CahierTexte /></ProtectedRoute>
+          <Route path="/cahiers" element={<CahierTexte/>
           } />
           <Route path="/vacations" element={
-            <ProtectedRoute><VacationsPage /></ProtectedRoute>
+            <VacationsPage />
           } />
           <Route path="/pointage-qr" element={
-            <ProtectedRoute><PointageQRPage /></ProtectedRoute>
+            <PointageQRPage />
           } />
         </Routes>
       </BrowserRouter>
