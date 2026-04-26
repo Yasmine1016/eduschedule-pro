@@ -4,7 +4,7 @@ import './DashboardLayout.css'
 import { useState } from 'react'
 
 function DashboardLayout({ children }) {
-  const { user, logout } = useAuth()
+  const { user, logout, role } = useAuth()
   const navigate = useNavigate()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
@@ -17,12 +17,58 @@ function DashboardLayout({ children }) {
     setSidebarOpen(!sidebarOpen)
   }
 
+  // Menu items selon le rôle
+  const getMenuItems = () => {
+    const commonItems = [
+      { label: 'Tableau de bord', icon: '📊', path: '/dashboard' }
+    ]
+
+    switch(role) {
+      case 'admin':
+        return [
+          ...commonItems,
+          { label: 'Emploi du temps', icon: '📅', path: '/emploi-temps' },
+          { label: 'Cahier de texte', icon: '📖', path: '/cahiers' },
+          { label: 'Pointage QR', icon: '📱', path: '/pointage-qr' },
+          { label: 'Vacations', icon: '💰', path: '/vacations' }
+        ]
+      case 'enseignant':
+        return [
+          ...commonItems,
+          { label: 'Emploi du temps', icon: '📅', path: '/emploi-temps' },
+          { label: 'Cahier de texte', icon: '📖', path: '/cahiers' },
+          { label: 'Pointage QR', icon: '📱', path: '/pointage-qr' },
+          { label: 'Vacations', icon: '💰', path: '/vacations' }
+        ]
+      case 'delegate':
+        return [
+          ...commonItems,
+          { label: 'Emploi du temps', icon: '📅', path: '/emploi-temps' },
+          { label: 'Cahier de texte', icon: '📖', path: '/cahiers' }
+        ]
+      case 'etudiant':
+        return [
+          { label: 'Emploi du temps', icon: '📅', path: '/emploi-temps' }
+        ]
+      default:
+        return commonItems
+    }
+  }
+
+  const menuItems = getMenuItems()
+console.log('Role:', role)
+console.log('Menu items:', menuItems)
+
   return (
     <div className="layout-container">
 
       <nav className="navbar">
         <button className="menu-toggle" onClick={toggleSidebar}>
-          ☰
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
         </button>
         <h5 className="navbar-brand">EduSchedule Pro</h5>
         <div className="navbar-right">
@@ -37,26 +83,16 @@ function DashboardLayout({ children }) {
 
         <div className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
           <ul className="sidebar-menu">
-            <li className="menu-item" onClick={() => navigate('/dashboard')}>
-              <span className="menu-icon">📊</span>
-              <span className="menu-text">Tableau de bord</span>
-            </li>
-            <li className="menu-item" onClick={() => navigate('/emploi-temps')}>
-              <span className="menu-icon">📅</span>
-              <span className="menu-text">Emploi du temps</span>
-            </li>
-            <li className="menu-item" onClick={() => navigate('/cahiers')}>
-              <span className="menu-icon">📖</span>
-              <span className="menu-text">Cahier de texte</span>
-            </li>
-            <li className="menu-item" onClick={() => navigate('/pointage-qr')}>
-              <span className="menu-icon">📱</span>
-              <span className="menu-text">Pointage QR</span>
-            </li>
-            <li className="menu-item" onClick={() => navigate('/vacations')}>
-              <span className="menu-icon">💰</span>
-              <span className="menu-text">Vacations</span>
-            </li>
+            {menuItems.map((item, idx) => (
+              <li 
+                key={idx}
+                className="menu-item" 
+                onClick={() => navigate(item.path)}
+              >
+                <span className="menu-icon">{item.icon}</span>
+                <span className="menu-text">{item.label}</span>
+              </li>
+            ))}
           </ul>
         </div>
 
